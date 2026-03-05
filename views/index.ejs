@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="SP's Cafe — Reserve your perfect table online. Fresh coffee, warm ambience, seamless booking.">
+    <title>SP's Cafe — Reserve Your Table</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <!-- ═══════════ NAVBAR ═══════════ -->
+    <nav class="navbar" id="navbar">
+        <a href="#home" class="nav-brand">
+            <span class="brand-icon">☕</span>
+            <span class="brand-text">SP's Cafe</span>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home" class="nav-link active">Home</a></li>
+            <li><a href="#about" class="nav-link">About</a></li>
+            <li><a href="#menu" class="nav-link">Menu</a></li>
+            <li><a href="#reviews" class="nav-link">Reviews</a></li>
+            <li><a href="#book" class="nav-link cta-link">Book Table</a></li>
+            <% if (customer) { %>
+                <li class="nav-user-info">
+                    <span class="nav-user-greeting"><i class="fas fa-user-circle"></i> Hi, <%= customer.name.split(' ')[0] %></span>
+                    <a href="/logout" class="nav-link logout-link" title="Sign Out"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </li>
+            <% } else { %>
+                <li><a href="/login" class="nav-link login-link"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+            <% } %>
+            <li><a href="/admin/login" class="nav-link admin-link"><i class="fas fa-user-shield"></i> Admin</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Toggle Navigation">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- ═══════════ HERO / HOME ═══════════ -->
+    <section class="hero" id="home">
+        <div class="hero-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+        <div class="hero-content">
+            <span class="hero-badge">☕ Crafted with passion since 2020</span>
+            <h1>Experience the<br>Art of <span class="gradient-text">Fine Coffee</span></h1>
+            <p>Reserve your perfect table at SP' s Cafe. Savor hand-crafted brews, delectable bites, and an ambience
+                            that feels like home.</p>
+                            <div class="hero-cta">
+                                <a href="#book" class="btn btn-primary">Book a Table <i
+                                        class="fas fa-arrow-right"></i></a>
+                                <a href="#menu" class="btn btn-outline">Explore Menu</a>
+                            </div>
+                            <div class="hero-stats">
+                                <div class="stat"><span class="stat-number">500+</span><span class="stat-label">Happy
+                                        Guests</span>
+                                </div>
+                                <div class="stat"><span class="stat-number">50+</span><span class="stat-label">Menu
+                                        Items</span></div>
+                                <div class="stat"><span class="stat-number">4.9</span><span class="stat-label">Rating
+                                        ⭐</span></div>
+                            </div>
+                            </div>
+                            </section>
+
+                            <!-- ═══════════ ABOUT ═══════════ -->
+                            <section class="section about" id="about">
+                                <div class="container">
+                                    <div class="section-header">
+                                        <span class="section-tag">Our Story</span>
+                                        <h2>Welcome to <span class="gradient-text">SP's Cafe</span></h2>
+                                        <p class="section-subtitle">Where every cup tells a story</p>
+                                    </div>
+                                    <div class="about-grid">
+                                        <div class="about-card">
+                                            <div class="about-icon">🌿</div>
+                                            <h3>Farm to Cup</h3>
+                                            <p>We source our beans directly from sustainable farms, ensuring every sip
+                                                delivers unmatched
+                                                freshness and flavor.</p>
+                                        </div>
+                                        <div class="about-card">
+                                            <div class="about-icon">👨‍🍳</div>
+                                            <h3>Expert Baristas</h3>
+                                            <p>Our skilled baristas craft each drink with precision and love, turning
+                                                your coffee into an art
+                                                form.</p>
+                                        </div>
+                                        <div class="about-card">
+                                            <div class="about-icon">🏡</div>
+                                            <h3>Cozy Ambience</h3>
+                                            <p>Step into a warm, inviting space designed for relaxation — whether you're
+                                                working, reading, or
+                                                catching up with friends.</p>
+                                        </div>
+                                        <div class="about-card">
+                                            <div class="about-icon">🍰</div>
+                                            <h3>Fresh Bakes</h3>
+                                            <p>Pair your drink with our freshly baked pastries, cakes, and savory bites
+                                                prepared daily in-house.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- ═══════════ MENU ═══════════ -->
+                            <section class="section menu" id="menu">
+                                <div class="container">
+                                    <div class="section-header">
+                                        <span class="section-tag">What We Serve</span>
+                                        <h2>Our <span class="gradient-text">Signature Menu</span></h2>
+                                        <p class="section-subtitle">Handcrafted with love, served with a smile</p>
+                                    </div>
+                                    <div class="menu-tabs">
+                                        <button class="menu-tab active" data-category="coffee">☕ Coffee</button>
+                                        <button class="menu-tab" data-category="food">🍽️ Food</button>
+                                        <button class="menu-tab" data-category="dessert">🍰 Desserts</button>
+                                    </div>
+                                    <div class="menu-grid" id="menuGrid">
+                                        <!-- Coffee -->
+                                        <div class="menu-card" data-category="coffee">
+                                            <div class="menu-img">
+                                                <img src="/img/menu/classic_espresso.png" alt="Classic Espresso">
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>Classic Espresso</h4>
+                                                <p>Rich, bold single-shot espresso</p>
+                                                <span class="menu-price">₹149</span>
+                                            </div>
+                                        </div>
+                                        <div class="menu-card" data-category="coffee">
+                                            <div class="menu-img">
+                                                <img src="/img/menu/caramel_latte.png" alt="Caramel Latte">
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>Caramel Latte</h4>
+                                                <p>Smooth latte with caramel drizzle</p>
+                                                <span class="menu-price">₹229</span>
+                                            </div>
+                                        </div>
+                                        <div class="menu-card" data-category="coffee">
+                                            <div class="menu-img">
+                                                <img src="/img/menu/mocha_delight.png" alt="Mocha Delight">
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>Mocha Delight</h4>
+                                                <p>Espresso blended with rich chocolate</p>
+                                                <span class="menu-price">₹249</span>
+                                            </div>
+                                        </div>
+                                        <div class="menu-card" data-category="coffee">
+                                            <div class="menu-img">
+                                                <img src="/img/menu/cold_brew.png" alt="Cold Brew">
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>Cold Brew</h4>
+                                                <p>Slow-steeped, ultra-smooth cold coffee</p>
+                                                <span class="menu-price">₹199</span>
+                                            </div>
+                                        </div>
+                                        <!-- Food -->
+                                        <div class="menu-card hidden" data-category="food">
+                                            <div class="menu-img">
+                                                <img src="/img/menu/grilled_panini.png" alt="Grilled Panini">
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>Grilled Panini</h4>
+                                                <p>Toasted panini with cheese & herbs</p>
+                                                <span class="menu-price">₹299</span>
+                                            </div>
+                                        </div>
+                                        <div class="menu-card hidden" data-category="food">
+                                            <div class="menu-img">
+                                                <img src="/img/menu/garden_salad.png" alt="Garden Fresh Salad">
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>Garden Fresh Salad</h4>
+                                                <p>Mixed greens, feta, and balsamic glaze</p>
+                                                <span class="menu-price">₹249</span>
+                                            </div>
+                                        </div>
+                                        <div class="menu-card hidden" data-category="food">
+                                            <div class="menu-img">
+                                                <img src="/img/menu/margherita_flatbread.png" alt="Margherita Flatbread">
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>Margherita Flatbread</h4>
+                                                <p>Thin crust with mozzarella & basil</p>
+                                                <span class="menu-price">₹349</span>
+                                            </div>
+                                        </div>
+                                        <div class="menu-card hidden" data-category="food">
+                                            <div class="menu-img">
+                                                <img src="/img/menu/pasta_alfredo.png" alt="Pasta Alfredo">
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>Pasta Alfredo</h4>
+                                                <p>Creamy white sauce penne pasta</p>
+                                                <span class="menu-price">₹379</span>
+                                            </div>
+                                        </div>
+                                        <!-- Desserts -->
+                                        <div class="menu-card hidden" data-category="dessert">
+                                            <div class="menu-img">
+                                                <img src="/img/menu/red_velvet_cake.png" alt="Red Velvet Cake">
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>Red Velvet Cake</h4>
+                                                <p>Classic red velvet with cream cheese</p>
+                                                <span class="menu-price">₹279</span>
+                                            </div>
+                                        </div>
+                                        <div class="menu-card hidden" data-category="dessert">
+                                            <div class="menu-img">
+                                                <img src="/img/menu/glazed_donut.png" alt="Glazed Donut">
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>Glazed Donut</h4>
+                                                <p>Soft donut with sugar glaze</p>
+                                                <span class="menu-price">₹149</span>
+                                            </div>
+                                        </div>
+                                        <div class="menu-card hidden" data-category="dessert">
+                                            <div class="menu-img">
+                                                <img src="/img/menu/choco_chip_cookie.png" alt="Choco Chip Cookie">
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>Choco Chip Cookie</h4>
+                                                <p>Warm, gooey chocolate chip cookie</p>
+                                                <span class="menu-price">₹99</span>
+                                            </div>
+                                        </div>
+                                        <div class="menu-card hidden" data-category="dessert">
+                                            <div class="menu-img">
+                                                <img src="/img/menu/blueberry_cheesecake.png" alt="Blueberry Cheesecake">
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>Blueberry Cheesecake</h4>
+                                                <p>Creamy cheesecake with blueberry compote</p>
+                                                <span class="menu-price">₹329</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- ═══════════ REVIEWS ═══════════ -->
+                            <section class="section reviews" id="reviews">
+                                <div class="container">
+                                    <div class="section-header">
+                                        <span class="section-tag">Testimonials</span>
+                                        <h2>What Our <span class="gradient-text">Guests Say</span></h2>
+                                        <p class="section-subtitle">Real experiences from real coffee lovers</p>
+                                    </div>
+                                    <div class="swiper reviewSwiper">
+                                        <div class="swiper-wrapper">
+                                            <div class="swiper-slide">
+                                                <div class="review-card">
+                                                    <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                                                    <p class="review-text">"The ambience at SP's Cafe is absolutely
+                                                        magical. The espresso is the
+                                                        best I've had in the city. Highly recommended!"</p>
+                                                    <div class="review-author">
+                                                        <div class="author-avatar">A</div>
+                                                        <div><strong>Aarav Sharma</strong><br><span>Regular
+                                                                Visitor</span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="review-card">
+                                                    <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                                                    <p class="review-text">"Booked a table for my birthday dinner and
+                                                        the experience was
+                                                        flawless. Amazing food, warm service, and a beautiful setting."
+                                                    </p>
+                                                    <div class="review-author">
+                                                        <div class="author-avatar">P</div>
+                                                        <div><strong>Priya Patel</strong><br><span>Birthday
+                                                                Celebration</span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="review-card">
+                                                    <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                                                    <p class="review-text">"Their cold brew is next-level. I come here
+                                                        every weekend just for
+                                                        the coffee and the cozy corner seats. Love it!"</p>
+                                                    <div class="review-author">
+                                                        <div class="author-avatar">R</div>
+                                                        <div><strong>Rohan Mehta</strong><br><span>Weekend
+                                                                Regular</span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="review-card">
+                                                    <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                                                    <p class="review-text">"As a freelancer, I need a quiet spot with
+                                                        great Wi-Fi and even
+                                                        better coffee. SP's Cafe checks every box!"</p>
+                                                    <div class="review-author">
+                                                        <div class="author-avatar">S</div>
+                                                        <div><strong>Sneha Reddy</strong><br><span>Freelancer</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="swiper-pagination"></div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- ═══════════ BOOK TABLE ═══════════ -->
+                            <section class="section book" id="book">
+                                <div class="container">
+                                    <div class="section-header">
+                                        <span class="section-tag">Reserve Now</span>
+                                        <h2>Book Your <span class="gradient-text">Table</span></h2>
+                                        <p class="section-subtitle">Fill in the details and we'll have your table ready
+                                        </p>
+                                        <% if (!customer) { %>
+                                            <div class="login-notice">
+                                                <i class="fas fa-lock"></i>
+                                                <span>You need to <a href="/login">log in</a> or <a
+                                                        href="/login?mode=signup">sign up</a> to book a table.</span>
+                                            </div>
+                                            <% } %>
+                                    </div>
+                                    <form class="book-form" id="bookForm">
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label for="bookName"><i class="fas fa-user"></i> Your Name</label>
+                                                <input type="text" id="bookName" name="name" placeholder="John Doe"
+                                                    required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="bookEmail"><i class="fas fa-envelope"></i> Email</label>
+                                                <input type="email" id="bookEmail" name="email"
+                                                    placeholder="you@example.com" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label for="bookPhone"><i class="fas fa-phone"></i> Phone</label>
+                                                <input type="tel" id="bookPhone" name="phone" placeholder="9876543210"
+                                                    pattern="[0-9]{10}" maxlength="10"
+                                                    title="Please enter exactly 10 digits" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="bookPartySize"><i class="fas fa-users"></i> Party
+                                                    Size</label>
+                                                <select id="bookPartySize" name="partySize" required>
+                                                    <option value="">Select guests</option>
+                                                    <option value="1">1 Person</option>
+                                                    <option value="2">2 People</option>
+                                                    <option value="3">3 People</option>
+                                                    <option value="4">4 People</option>
+                                                    <option value="5">5 People</option>
+                                                    <option value="6">6+ People</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label for="bookDate"><i class="fas fa-calendar-alt"></i> Date</label>
+                                                <input type="date" id="bookDate" name="date" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="bookSlot"><i class="fas fa-clock"></i> Time Slot</label>
+                                                <select id="bookSlot" name="slot" required disabled>
+                                                    <option value="">← Pick a date first</option>
+                                                </select>
+                                                <small id="slotHint" class="slot-hint"></small>
+                                            </div>
+                                        </div>
+                                        <div class="form-group full-width">
+                                            <label for="bookMessage"><i class="fas fa-comment"></i> Special
+                                                Requests</label>
+                                            <textarea id="bookMessage" name="message"
+                                                placeholder="Anything special we should know?" rows="3"></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-submit" id="bookSubmitBtn">
+                                            <i class="fas fa-calendar-check"></i> Reserve My Table
+                                        </button>
+                                    </form>
+                                    <div class="form-response" id="formResponse"></div>
+                                </div>
+                            </section>
+
+                            <!-- ═══════════ FOOTER ═══════════ -->
+                            <footer class="footer">
+                                <div class="container footer-grid">
+                                    <div class="footer-brand">
+                                        <h3><span class="brand-icon">☕</span> SP's Cafe</h3>
+                                        <p>Crafting memorable moments over great coffee since 2020. Visit us and
+                                            discover your new favorite
+                                            spot.</p>
+                                    </div>
+                                    <div class="footer-links">
+                                        <h4>Quick Links</h4>
+                                        <a href="#home">Home</a>
+                                        <a href="#about">About Us</a>
+                                        <a href="#menu">Our Menu</a>
+                                        <a href="#book">Book a Table</a>
+                                    </div>
+                                    <div class="footer-hours">
+                                        <h4>Opening Hours</h4>
+                                        <p>Mon – Sun: 8:00 AM – 12:00 PM</p>
+                                        <p>Mon – Sun: 4:00 PM – 8:00 PM</p>
+                                    </div>
+                                    <div class="footer-social">
+                                        <h4>Follow Us</h4>
+                                        <div class="social-icons">
+                                            <a href="#"><i class="fab fa-instagram"></i></a>
+                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                            <a href="#"><i class="fab fa-twitter"></i></a>
+                                            <a href="#"><i class="fab fa-whatsapp"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="footer-bottom">
+                                    <p>&copy; 2026 SP's Cafe. All rights reserved. Sasapara Prit & Parmar Shrey.</p>
+                                </div>
+                            </footer>
+
+                            <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+                            <script src="/js/main.js"></script>
+</body>
+
+</html>

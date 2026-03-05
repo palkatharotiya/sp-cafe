@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — SP's Cafe</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body class="admin-body">
+
+    <!-- Admin Navbar -->
+    <nav class="admin-nav">
+        <div class="admin-nav-left">
+            <span class="brand-icon">☕</span>
+            <span class="brand-text">SP's Cafe</span>
+            <span class="admin-badge">Admin</span>
+        </div>
+        <div class="admin-nav-right">
+            <span class="admin-user"><i class="fas fa-user-shield"></i>
+                <%= adminName %>
+            </span>
+            <a href="/" class="admin-link"><i class="fas fa-globe"></i> View Site</a>
+            <a href="/admin/logout" class="admin-link logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+
+        <!-- Welcome Header -->
+        <div class="admin-welcome">
+            <h1>👋 Welcome back, <%= adminName %>
+            </h1>
+            <p>Here's what's happening at your cafe today</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon bookings"><i class="fas fa-calendar-check"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number">
+                        <%= bookings.length %>
+                    </span>
+                    <span class="stat-label">Total Bookings</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon guests"><i class="fas fa-users"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number">
+                        <%= bookings.reduce((s,b)=> s + b.partySize, 0) %>
+                    </span>
+                    <span class="stat-label">Total Guests</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon slots"><i class="fas fa-clock"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number">
+                        <%= slots.length %>
+                    </span>
+                    <span class="stat-label">Time Slots</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon today"><i class="fas fa-star"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number">
+                        <%= bookings.filter(b=> b.date === new Date().toISOString().split('T')[0]).length %>
+                    </span>
+                    <span class="stat-label">Today's Bookings</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Two Column Layout -->
+        <div class="admin-grid">
+
+            <!-- Left: Reservations -->
+            <div class="admin-panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-list-check"></i> Reservations</h2>
+                    <form class="filter-form" method="GET" action="/admin/dashboard">
+                        <input type="date" name="date" value="<%= filterDate %>" onchange="this.form.submit()">
+                        <% if (filterDate) { %>
+                            <a href="/admin/dashboard" class="clear-filter" title="Clear filter"><i
+                                    class="fas fa-times"></i></a>
+                            <% } %>
+                    </form>
+                </div>
+
+                <% if (bookings.length===0) { %>
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-xmark"></i>
+                        <p>No reservations found<%= filterDate ? ' for this date' : '' %>.</p>
+                        <p class="empty-hint">Bookings will appear here when customers reserve a table.</p>
+                    </div>
+                    <% } else { %>
+                        <div class="booking-list">
+                            <% bookings.forEach(b=> { %>
+                                <div class="booking-card" id="row-<%= b._id %>">
+                                    <div class="booking-main">
+                                        <div class="booking-name">
+                                            <%= b.name %>
+                                                <span class="party-count"><i class="fas fa-user"></i>
+                                                    <%= b.partySize %>
+                                                </span>
+                                        </div>
+                                        <div class="booking-details">
+                                            <span class="booking-detail">
+                                                <i class="fas fa-envelope"></i>
+                                                <%= b.email %>
+                                            </span>
+                                            <span class="booking-detail">
+                                                <i class="fas fa-phone"></i>
+                                                <%= b.phone %>
+                                            </span>
+                                            <span class="booking-detail">
+                                                <i class="fas fa-calendar"></i>
+                                                <%= b.date %>
+                                            </span>
+                                        </div>
+                                        <div style="display:flex; align-items:center; gap:10px; margin-top:2px;">
+                                            <span class="booking-slot-tag">
+                                                <i class="fas fa-clock"></i>
+                                                <%= slotMap[b.slot] || b.slot %>
+                                            </span>
+                                            <% if (b.message) { %>
+                                                <span class="booking-message">
+                                                    <i class="fas fa-comment"></i> "<%= b.message %>"
+                                                </span>
+                                                <% } %>
+                                        </div>
+                                    </div>
+                                    <div class="booking-actions">
+                                        <button class="btn-delete" onclick="deleteBooking('<%= b._id %>')"
+                                            title="Cancel this booking">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <% }) %>
+                        </div>
+                        <% } %>
+            </div>
+
+            <!-- Right Column -->
+            <div>
+                <!-- Slot Management -->
+                <div class="admin-panel slot-panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-sliders"></i> Slot Management</h2>
+                    </div>
+                    <p class="panel-desc">Set the maximum number of <strong>seats</strong> available for each 2-hour
+                        time slot. Changes apply to <strong>all future</strong> dates.</p>
+
+                    <div class="slot-cards">
+                        <% slots.forEach(slot=> { %>
+                            <div class="slot-config-card" id="slot-<%= slot.slotId %>">
+                                <div class="slot-header">
+                                    <span class="slot-period <%= slot.period %>">
+                                        <i
+                                            class="fas fa-<%= slot.period === 'morning' ? 'sun' : (slot.period === 'afternoon' ? 'cloud-sun' : 'moon') %>"></i>
+                                        <%= slot.period==='morning' ? 'Morning' : (slot.period==='afternoon'
+                                            ? 'Afternoon' : 'Evening' ) %>
+                                    </span>
+                                    <span class="slot-label">
+                                        <%= slot.label %>
+                                    </span>
+                                </div>
+                                <div class="slot-capacity-row">
+                                    <label>Max Seats:</label>
+                                    <div class="capacity-input-group">
+                                        <button class="cap-btn cap-minus"
+                                            onclick="adjustCapacity('<%= slot.slotId %>', -1)">−</button>
+                                        <input type="number" id="cap-<%= slot.slotId %>" value="<%= slot.capacity %>"
+                                            min="1" max="100" class="cap-input">
+                                        <button class="cap-btn cap-plus"
+                                            onclick="adjustCapacity('<%= slot.slotId %>', 1)">+</button>
+                                    </div>
+                                    <button class="btn-save-cap" onclick="saveCapacity('<%= slot.slotId %>')">
+                                        <i class="fas fa-save"></i> Save
+                                    </button>
+                                </div>
+                                <div class="cap-feedback" id="feedback-<%= slot.slotId %>"></div>
+                            </div>
+                            <% }) %>
+                    </div>
+                </div>
+
+                <!-- Quick Tips Panel -->
+                <div class="tips-panel">
+                    <h3><i class="fas fa-lightbulb"></i> Quick Tips</h3>
+                    <div class="tip-item">
+                        <i class="fas fa-filter"></i>
+                        <span>Use the <strong>date filter</strong> above to view bookings for a specific day.</span>
+                    </div>
+                    <div class="tip-item">
+                        <i class="fas fa-chair"></i>
+                        <span>Adjust <strong>Max Seats</strong> to control how many guests can book each time
+                            slot.</span>
+                    </div>
+                    <div class="tip-item">
+                        <i class="fas fa-trash-alt"></i>
+                        <span>Click the <strong>delete button</strong> on any booking to cancel it and free up
+                            seats.</span>
+                    </div>
+                    <div class="tip-item">
+                        <i class="fas fa-globe"></i>
+                        <span>Click <strong>"View Site"</strong> in the top bar to see your website as customers see
+                            it.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/admin.js"></script>
+</body>
+
+</html>

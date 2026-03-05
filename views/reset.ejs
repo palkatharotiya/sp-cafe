@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set New Password — SP's Cafe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/auth.css">
+    <style>
+        .auth-container {
+            width: 450px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .auth-container form {
+            width: 100%;
+            padding: 0;
+        }
+
+        .auth-container h1 {
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .auth-container p {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .auth-container input {
+            margin-bottom: 16px;
+        }
+
+        .auth-container button {
+            width: 100%;
+        }
+
+        .auth-container .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            color: #6B5D4F;
+            font-size: 13px;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body class="auth-body">
+    <a href="/" class="back-to-cafe">
+        <i class="fas fa-arrow-left"></i> Back to SP's Cafe
+    </a>
+
+    <div class="auth-container">
+        <form action="/reset" method="POST">
+            <h1>New Password</h1>
+            <p>Please enter your new password below.</p>
+
+            <% if (typeof error !=='undefined' && error) { %>
+                <div class="auth-message error">
+                    <%= error %>
+                </div>
+                <% } %>
+
+                    <input type="password" name="password" placeholder="New Password (min 6 chars)" required
+                        minlength="6">
+                    <input type="password" name="confirmPassword" placeholder="Confirm New Password" required
+                        minlength="6">
+                    <button type="submit">Update Password</button>
+                    <a href="/login" class="back-link">Cancel</a>
+        </form>
+    </div>
+</body>
+
+</html>

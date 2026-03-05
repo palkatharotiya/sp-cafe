@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sign in to SP's Cafe to book your table and enjoy our premium coffee experience.">
+    <title>Login — SP's Cafe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/auth.css">
+</head>
+
+<body class="auth-body">
+
+    <a href="/" class="back-to-cafe">
+        <i class="fas fa-arrow-left"></i> Back to SP's Cafe
+    </a>
+
+    <div class="auth-container" id="authContainer">
+        <!-- ═══════════ SIGN UP FORM ═══════════ -->
+        <div class="form-container sign-up">
+            <form id="signupForm" action="/signup" method="POST">
+                <h1>Create Account</h1>
+                <div class="social-icons">
+                    <a href="#" class="icon google-btn" id="googleSignupBtn" title="Sign up with Google"><i
+                            class="fa-brands fa-google"></i></a>
+                    <a href="#" class="icon" title="Coming soon"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="icon" title="Coming soon"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+                <span>or use your email for registration</span>
+                <% if (typeof signupError !=='undefined' && signupError) { %>
+                    <div class="auth-message error">
+                        <%= signupError %>
+                    </div>
+                    <% } %>
+                        <% if (typeof signupSuccess !=='undefined' && signupSuccess) { %>
+                            <div class="auth-message success">
+                                <%= signupSuccess %>
+                            </div>
+                            <% } %>
+                                <input type="text" name="name" placeholder="Full Name" required
+                                    value="<%= typeof signupName !== 'undefined' ? signupName : '' %>">
+                                <input type="email" name="email" placeholder="Email" required
+                                    value="<%= typeof signupEmail !== 'undefined' ? signupEmail : '' %>">
+                                <input type="tel" name="phone" placeholder="Phone Number (10 digits)"
+                                    pattern="[0-9]{10}" maxlength="10" title="Please enter exactly 10 digits">
+                                <input type="password" name="password" placeholder="Password (min 6 chars)" required
+                                    minlength="6">
+                                <button type="submit" id="signupSubmitBtn">Sign Up</button>
+                                <div class="google-loading" id="googleSignupLoading">
+                                    <i class="fas fa-spinner fa-spin"></i> Signing in with Google...
+                                </div>
+            </form>
+        </div>
+
+        <!-- ═══════════ SIGN IN FORM ═══════════ -->
+        <div class="form-container sign-in">
+            <form id="loginForm" action="/login" method="POST">
+                <h1>Welcome Back</h1>
+                <div class="social-icons">
+                    <a href="#" class="icon google-btn" id="googleLoginBtn" title="Sign in with Google"><i
+                            class="fa-brands fa-google"></i></a>
+                    <a href="#" class="icon" title="Coming soon"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="icon" title="Coming soon"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+                <span>or use your email &amp; password</span>
+                <% if (typeof loginError !=='undefined' && loginError) { %>
+                    <div class="auth-message error">
+                        <%= loginError %>
+                    </div>
+                    <% } %>
+                        <input type="email" name="email" placeholder="Email" required
+                            value="<%= typeof loginEmail !== 'undefined' ? loginEmail : '' %>">
+                        <input type="password" name="password" placeholder="Password" required>
+                        <a href="/forgot" style="align-self: flex-end; margin-top: 4px; margin-bottom: 8px;">Forgot your
+                            password?</a>
+                        <button type="submit" id="loginSubmitBtn">Sign In</button>
+                        <div class="google-loading" id="googleLoginLoading">
+                            <i class="fas fa-spinner fa-spin"></i> Signing in with Google...
+                        </div>
+            </form>
+        </div>
+
+        <!-- ═══════════ TOGGLE OVERLAY ═══════════ -->
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <div class="cafe-icon">☕</div>
+                    <h1>Welcome Back!</h1>
+                    <p>Already have an account? Sign in to book your next table at SP's Cafe</p>
+                    <button class="hidden" id="loginToggle">Sign In</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <div class="cafe-icon">☕</div>
+                    <h1>Hello, Friend!</h1>
+                    <p>Join SP's Cafe to book tables, get exclusive offers, and more</p>
+                    <button class="hidden" id="registerToggle">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile switch links (hidden on desktop) -->
+    <div class="auth-mobile-switch" id="mobileSwitch">
+        <span id="mobileSwitchText">Don't have an account?</span>
+        <a href="#" id="mobileSwitchLink">Sign Up</a>
+    </div>
+
+    <!-- Firebase SDK (for Google Sign-In only) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+
+        // Firebase config for sp-s-cafe
+        const firebaseConfig = {
+            apiKey: "AIzaSyB0z71jylq-IBZpG9cFR8HcOZyFIfLx8Vo",
+            authDomain: "sp-s-cafe.firebaseapp.com",
+            projectId: "sp-s-cafe",
+            storageBucket: "sp-s-cafe.firebasestorage.app",
+            messagingSenderId: "1049141077623",
+            appId: "1:1049141077623:web:d256bbad85c6357023c872",
+            measurementId: "G-YF5N3FMZTT"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        // Google Sign-In handler
+        async function handleGoogleSignIn(loadingElId) {
+            const loadingEl = document.getElementById(loadingElId);
+            try {
+                loadingEl.classList.add('show');
+
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+
+                // Send user info to backend
+                const response = await fetch('/auth/google', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: user.displayName || 'Google User',
+                        email: user.email,
+                        googleUid: user.uid
+                    })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    window.location.href = data.redirect || '/#book';
+                } else {
+                    loadingEl.classList.remove('show');
+                    alert(data.message || 'Google sign-in failed.');
+                }
+            } catch (error) {
+                loadingEl.classList.remove('show');
+                if (error.code !== 'auth/popup-closed-by-user') {
+                    console.error('Google Sign-In error:', error);
+                    alert('Google sign-in failed: ' + (error.message || 'Unknown error'));
+                }
+            }
+        }
+
+        // Attach to both Google buttons
+        document.getElementById('googleLoginBtn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            handleGoogleSignIn('googleLoginLoading');
+        });
+
+        document.getElementById('googleSignupBtn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            handleGoogleSignIn('googleSignupLoading');
+        });
+    </script>
+
+    <script src="/js/auth.js"></script>
+</body>
+
+</html>

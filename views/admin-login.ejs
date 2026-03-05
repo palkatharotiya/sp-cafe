@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login — SP's Cafe</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .admin-login-wrapper {
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+        }
+
+        .admin-login-card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 48px 36px;
+            text-align: center;
+        }
+
+        .admin-login-card .brand-icon {
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+
+        .admin-login-card h1 {
+            font-family: var(--font-heading);
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .admin-login-card .subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+
+        .admin-login-card .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .admin-login-card .form-group label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+
+        .admin-login-card .form-group label i {
+            color: var(--accent);
+            font-size: 12px;
+        }
+
+        .admin-login-card .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 14px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .admin-login-card .form-group input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .admin-login-card .btn-login {
+            width: 100%;
+            padding: 14px;
+            border-radius: var(--radius-lg);
+            border: none;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: #1a0f08;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .admin-login-card .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--accent-glow);
+        }
+
+        .error-msg {
+            background: rgba(244, 67, 54, 0.1);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            color: #f44336;
+            padding: 10px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13px;
+            transition: var(--transition);
+        }
+
+        .back-link:hover {
+            color: var(--accent-light);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hero-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+    <div class="admin-login-wrapper">
+        <div class="admin-login-card">
+            <div class="brand-icon">☕</div>
+            <h1>Admin Panel</h1>
+            <p class="subtitle">SP's Cafe Management</p>
+
+            <% if (error) { %>
+                <div class="error-msg"><i class="fas fa-exclamation-circle"></i>
+                    <%= error %>
+                </div>
+                <% } %>
+
+                    <form method="POST" action="/admin/login">
+                        <div class="form-group">
+                            <label><i class="fas fa-user"></i> Username</label>
+                            <input type="text" name="username" placeholder="Enter username" required autofocus>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-lock"></i> Password</label>
+                            <input type="password" name="password" placeholder="Enter password" required>
+                        </div>
+                        <button type="submit" class="btn-login"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+                    </form>
+                    <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Back to SP's Cafe</a>
+        </div>
+    </div>
+</body>
+
+</html>

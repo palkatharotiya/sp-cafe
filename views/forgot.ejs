@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password — SP's Cafe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/auth.css">
+    <style>
+        .auth-container {
+            width: 450px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .auth-container form {
+            width: 100%;
+            padding: 0;
+        }
+
+        .auth-container h1 {
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .auth-container p {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .auth-container input {
+            margin-bottom: 16px;
+        }
+
+        .auth-container button {
+            width: 100%;
+        }
+
+        .auth-container .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            color: #6B5D4F;
+            font-size: 13px;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body class="auth-body">
+    <a href="/" class="back-to-cafe">
+        <i class="fas fa-arrow-left"></i> Back to SP's Cafe
+    </a>
+
+    <div class="auth-container">
+        <form id="forgotForm">
+            <h1>Reset Password</h1>
+            <p>Enter your email address and we'll send you a link to reset your password.</p>
+
+            <div id="messageContainer"></div>
+
+            <input type="email" id="resetEmail" name="email" placeholder="Your account email" required>
+            <button type="submit" id="resetBtn">Send Reset Link</button>
+            <a href="/login" class="back-link">Back to Login</a>
+        </form>
+    </div>
+
+    <!-- Firebase SDK (for password reset) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+
+        // Firebase config for sp-s-cafe
+        const firebaseConfig = {
+            apiKey: "AIzaSyB0z71jylq-IBZpG9cFR8HcOZyFIfLx8Vo",
+            authDomain: "sp-s-cafe.firebaseapp.com",
+            projectId: "sp-s-cafe",
+            storageBucket: "sp-s-cafe.firebasestorage.app",
+            messagingSenderId: "1049141077623",
+            appId: "1:1049141077623:web:d256bbad85c6357023c872",
+            measurementId: "G-YF5N3FMZTT"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        document.getElementById('forgotForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('resetEmail').value;
+            const btn = document.getElementById('resetBtn');
+            const msgContainer = document.getElementById('messageContainer');
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            msgContainer.innerHTML = '';
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                msgContainer.innerHTML = '<div class="auth-message success">Password reset email sent! Check your inbox.</div>';
+                document.getElementById('resetEmail').value = '';
+            } catch (error) {
+                console.error("Error sending reset email:", error);
+
+                let errorMsg = 'Failed to send reset email. Please try again.';
+                if (error.code === 'auth/user-not-found') {
+                    errorMsg = 'No account found with this email.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMsg = 'Invalid email address.';
+                }
+
+                msgContainer.innerHTML = `<div class="auth-message error">${errorMsg}</div>`;
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'Send Reset Link';
+            }
+        });
+    </script>
+</body>
+
+</html>
